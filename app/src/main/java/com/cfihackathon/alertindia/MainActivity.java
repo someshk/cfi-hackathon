@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,10 @@ import android.view.MenuItem;
 
 import com.cfihackathon.alertindia.common.AppPrefs;
 import com.cfihackathon.alertindia.ui.signin.SigninActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
 public class MainActivity extends BaseActivity
@@ -52,6 +57,7 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,22 +85,6 @@ public class MainActivity extends BaseActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if(id == R.id.action_sign_out) {
-            // Clear the default account so that GoogleApiClient will not automatically
-            // connect in the future.
-            // [START sign_out_clicked]
-            if (mGoogleApiClient.isConnected()) {
-                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                mGoogleApiClient.disconnect();
-            }
-
-            // Update the Sign in Status in the shared preferences
-            AppPrefs.setUserSignInStatus(this, false);
-
-            // Show Signin Activity
-            SigninActivity.start(this);
-            finish();
-
         }
 
         return super.onOptionsItemSelected(item);
