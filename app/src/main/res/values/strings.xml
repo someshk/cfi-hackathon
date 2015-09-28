@@ -24,4 +24,7 @@
     <string name="action_reply">Reply</string>
     <string name="play_services_error_fmt">Google Play Services Error, Error code = %1$s</string>
     <string name="action_sign_out">Sign Out</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

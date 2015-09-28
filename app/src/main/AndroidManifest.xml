@@ -9,7 +9,13 @@
     <uses-permission android:name="com.mobispectra.android.apps.grace.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Needed for Google Cast integration -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- Used by Google Analytics -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission
+        android:name="com.cfihackathon.alertindia.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.cfihackathon.alertindia.C2D_MESSAGE" /> <!-- Used by Google Analytics -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,6 +46,31 @@
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.cfihackathon.alertindia" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.cfihackathon.alertindia.gcm.AppGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.cfihackathon.alertindia.gcm.AppInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

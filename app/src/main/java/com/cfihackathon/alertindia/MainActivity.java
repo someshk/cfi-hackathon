@@ -2,9 +2,12 @@ package com.cfihackathon.alertindia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,8 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.cfihackathon.alertindia.common.AppPrefs;
+import com.cfihackathon.alertindia.ui.home.HomeFragment;
 import com.cfihackathon.alertindia.ui.signin.SigninActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -25,7 +30,12 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        HomeFragment.OnFragmentInteractionListener {
+
+    private FrameLayout mFragmentContainer;
+
+    private static final String FRAGMENT_HOME = " fragment_home";
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -55,6 +65,21 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Setup the Home Fragment
+        mFragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag(FRAGMENT_HOME);
+        if(fragment!=null) {
+            fm.beginTransaction().replace(R.id.fragment_container,
+                    fragment, FRAGMENT_HOME)
+                    .commit();
+        } else {
+            fm.beginTransaction().replace(R.id.fragment_container,
+                    HomeFragment.newInstance(null, null), FRAGMENT_HOME)
+
+                    .commit();
+        }
     }
 
 
@@ -113,5 +138,10 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
